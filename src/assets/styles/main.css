@@ -1,0 +1,89 @@
+/* CSS custom properties & reset */
+:root {
+  --font-mono: 'Space Mono', 'Courier New', monospace;
+  --color-ink: #1a1a1a;
+  --color-ink-light: #555;
+  --color-border: rgba(26, 26, 26, 0.15);
+  --bg-color: #f5ecd7;
+
+  --section-завтраки: #f5ecd7;
+  --section-закуски: #d4e6c3;
+  --section-основное: #e8c4b0;
+  --section-десерты: #f0d4d4;
+
+  --spacing: 8px;
+  --max-width: 1400px;
+  --header-height: 90px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-mono);
+  color: var(--color-ink);
+  background-color: var(--bg-color);
+  transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: var(--font-mono);
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input,
+select {
+  font-family: var(--font-mono);
+}
+
+/* Utility: visually hidden */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Photo placeholder */
+.photo-placeholder {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.07) 0%, rgba(26, 26, 26, 0.15) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-ink-light);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
