@@ -19,6 +19,7 @@ interface DirectusRecipe {
 
 interface DirectusIngredient {
   id: number
+  recipe_id: number
   ingredient_key: string
   name: string
   amount: number
@@ -32,6 +33,7 @@ interface DirectusIngredient {
 
 interface DirectusStep {
   id: number
+  recipe_id: number
   text: string
   sort: number
 }
@@ -67,19 +69,43 @@ function toRecipe(d: DirectusRecipe): Recipe {
 }
 
 export async function fetchRecipes(): Promise<Recipe[]> {
-  const res = await fetch(
-    `${BASE_URL}/items/recipes?fields=*,ingredients.*,steps.*&limit=100&sort=id`,
-  )
-  if (!res.ok) throw new Error(`Directus error: ${res.status}`)
-  const json = await res.json()
-  return (json.data as DirectusRecipe[]).map(toRecipe)
+  const [recipesRes, ingredientsRes, stepsRes] = await Promise.all([
+    fetch(`${BASE_URL}/items/recipes?limit=100&sort=id`),
+    fetch(`${BASE_URL}/items/ingredients?limit=1000&sort=sort`),
+    fetch(`${BASE_URL}/items/steps?limit=1000&sort=sort`),
+  ])
+
+  if (!recipesRes.ok) throw new Error(`Directus error: ${recipesRes.status}`)
+
+  const [recipesJson, ingredientsJson, stepsJson] = await Promise.all([
+    recipesRes.json(),
+    ingredientsRes.json(),
+    stepsRes.json(),
+  ])
+
+  const ingredients: DirectusIngredient[] = ingredientsJson.data ?? []
+  const steps: DirectusStep[] = stepsJson.data ?? []
+
+  return (recipesJson.data as DirectusRecipe[]).map((r) => {
+    r.ingredients = ingredients.filter((i) => i.recipe_id === r.id)
+    r.steps = steps.filter((s) => s.recipe_id === r.id)
+    return toRecipe(r)
+  })
 }
 
 export async function fetchRecipeById(id: string): Promise<Recipe | null> {
-  const res = await fetch(
-    `${BASE_URL}/items/recipes/${id}?fields=*,ingredients.*,steps.*`,
-  )
+  const res = await fetch(`${BASE_URL}/items/recipes?filter[slug][_eq]=${id}`)
   if (!res.ok) return null
   const json = await res.json()
-  return toRecipe(json.data as DirectusRecipe)
+  const recipe = json.data?.[0] as DirectusRecipe | undefined
+  if (!recipe) return null
+
+  const [ingRes, stepsRes] = await Promise.all([
+    fetch(`${BASE_URL}/items/ingredients?filter[recipe_id][_eq]=${recipe.id}&sort=sort`),
+    fetch(`${BASE_URL}/items/steps?filter[recipe_id][_eq]=${recipe.id}&sort=sort`),
+  ])
+
+  recipe.ingredients = ingRes.ok ? (await ingRes.json()).data ?? [] : []
+  recipe.steps = stepsRes.ok ? (await stepsRes.json()).data ?? [] : []
+  return toRecipe(recipe)
 }
