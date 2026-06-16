@@ -1,6 +1,6 @@
 import type { Recipe, SectionKey } from '../types'
 
-const BASE_URL = 'http://157.180.79.150:8055'
+const BASE_URL = 'https://157-180-79-150.sslip.io'
 
 interface DirectusRecipe {
   id: number
