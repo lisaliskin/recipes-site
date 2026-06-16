@@ -1,5 +1,9 @@
 <template>
-  <main v-if="recipe" class="recipe-view">
+  <div v-if="recipesStore.loading" class="not-found">
+    <p class="text-body">загружаем рецепт...</p>
+  </div>
+
+  <main v-else-if="recipe" class="recipe-view">
     <RecipeHero :recipe="recipe" :kcal="kcalPerServing" />
 
     <div class="recipe-body">
@@ -35,10 +39,10 @@
 
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue'
-import { getRecipeById } from '../../data/recipes'
 import { useIngredientScaling } from '../../composables/useIngredientScaling'
 import { useCalories } from '../../composables/useCalories'
 import { useUiStore } from '../../stores/uiStore'
+import { useRecipesStore } from '../../stores/recipesStore'
 import type { ScalingMode } from '../../composables/useIngredientScaling'
 import RecipeHero from './RecipeHero.vue'
 import ScalingControls from './ScalingControls.vue'
@@ -47,8 +51,9 @@ import InstructionSteps from './InstructionSteps.vue'
 
 const props = defineProps<{ id: string }>()
 const uiStore = useUiStore()
+const recipesStore = useRecipesStore()
 
-const recipe = computed(() => getRecipeById(props.id))
+const recipe = computed(() => recipesStore.getById(props.id).value)
 
 const fallbackRecipe = {
   id: '',
@@ -77,16 +82,13 @@ const {
   setMode,
 } = useIngredientScaling(activeRecipe.value)
 
-watch(
-  () => props.id,
-  () => {
-    const r = getRecipeById(props.id)
-    if (r) {
-      desiredServings.value = r.servings
-      mode.value = 'servings'
-    }
-  },
-)
+watch(recipe, (r) => {
+  if (r) {
+    desiredServings.value = r.servings
+    mode.value = 'servings'
+    uiStore.setActiveSection(r.section)
+  }
+})
 
 const { kcalPerServing } = useCalories(activeRecipe.value, scaleFactor, scaledServings)
 
@@ -94,7 +96,8 @@ function setModeHandler(m: ScalingMode) {
   setMode(m)
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await recipesStore.load()
   if (recipe.value) {
     uiStore.setActiveSection(recipe.value.section)
   }
