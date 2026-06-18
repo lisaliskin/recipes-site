@@ -6,6 +6,12 @@
 
       <nav class="header-nav text-label">
         <RouterLink to="/" class="nav-link">главная</RouterLink>
+        <RouterLink
+          to="/favorites"
+          class="nav-link fav-link"
+          :class="{ 'fav-active': isFavoritesRoute }"
+          aria-label="избранное"
+        >♥</RouterLink>
         <button class="nav-link cart-btn" @click="uiStore.toggleCart">
           список продуктов
           <span v-if="cartStore.totalItems > 0" class="cart-badge">
@@ -18,12 +24,17 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useCartStore } from '../../stores/cartStore'
 import { useUiStore } from '../../stores/uiStore'
 import MarqueeStrip from './MarqueeStrip.vue'
 
 const cartStore = useCartStore()
 const uiStore = useUiStore()
+const route = useRoute()
+
+const isFavoritesRoute = computed(() => route.name === 'favorites')
 </script>
 
 <style scoped>
@@ -75,6 +86,22 @@ const uiStore = useUiStore()
 
 .nav-link:hover {
   opacity: 0.55;
+}
+
+.fav-link {
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1;
+  transition: color 0.25s, opacity 0.2s;
+}
+
+.fav-active {
+  color: #c0392b;
+  opacity: 1 !important;
+}
+
+.fav-active:hover {
+  opacity: 0.75 !important;
 }
 
 .cart-badge {

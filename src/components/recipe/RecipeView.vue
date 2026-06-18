@@ -4,7 +4,7 @@
   </div>
 
   <main v-else-if="recipe" class="recipe-view">
-    <RecipeHero :recipe="recipe" :kcal="kcalPerServing" />
+    <RecipeHero :recipe="recipe" :kcal="kcalPerServing" :macros="macros" />
 
     <div class="recipe-body">
       <div class="recipe-left">
@@ -90,7 +90,7 @@ watch(recipe, (r) => {
   }
 })
 
-const { kcalPerServing } = useCalories(activeRecipe, scaleFactor, scaledServings)
+const { kcalPerServing, macros } = useCalories(activeRecipe, scaleFactor, scaledServings)
 
 function setModeHandler(m: ScalingMode) {
   setMode(m)

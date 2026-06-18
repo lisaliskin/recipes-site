@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { recipes } from '../data/recipes'
+import { useRecipesStore } from './recipesStore'
 
 export const useFavoritesStore = defineStore('favorites', () => {
   const seedCounts: Record<string, number> = {}
@@ -35,9 +36,10 @@ export const useFavoritesStore = defineStore('favorites', () => {
     localStorage.setItem('globalCounts', JSON.stringify(globalCounts.value))
   }
 
-  const favoritedRecipes = computed(() =>
-    recipes.filter((r) => userFavorites.value[r.id]),
-  )
+  const favoritedRecipes = computed(() => {
+    const recipesStore = useRecipesStore()
+    return recipesStore.recipes.filter((r) => userFavorites.value[r.id])
+  })
 
   return { userFavorites, globalCounts, isFavorited, getCount, toggleFavorite, favoritedRecipes }
 })

@@ -46,6 +46,9 @@
         </div>
 
         <div v-if="cartStore.entries.length > 0" class="drawer-footer">
+          <button class="export-btn text-label" @click="exportList">
+            {{ copied ? '✓ скопировано' : 'поделиться списком' }}
+          </button>
           <button class="clear-btn text-label" @click="cartStore.clearCart">
             очистить список
           </button>
@@ -56,6 +59,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useCartStore } from '../../stores/cartStore'
 import { useUiStore } from '../../stores/uiStore'
 import { useRecipesStore } from '../../stores/recipesStore'
@@ -64,9 +68,35 @@ import CartItem from './CartItem.vue'
 const cartStore = useCartStore()
 const uiStore = useUiStore()
 const recipesStore = useRecipesStore()
+const copied = ref(false)
 
 function getTitle(id: string): string {
   return recipesStore.getById(id).value?.title ?? id
+}
+
+function buildText(): string {
+  const recipes = cartStore.entries
+    .map((e) => `${getTitle(e.recipeId)} (${e.servings} порц.)`)
+    .join(', ')
+
+  const ingredients = cartStore.mergedIngredients
+    .map((i) => `• ${i.name} — ${Math.round(i.totalAmount * 10) / 10} ${i.baseUnit}`)
+    .join('\n')
+
+  return `список продуктов\n\nрецепты: ${recipes}\n\n${ingredients}`
+}
+
+async function exportList() {
+  const text = buildText()
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'список продуктов', text })
+      return
+    } catch {}
+  }
+  await navigator.clipboard.writeText(text)
+  copied.value = true
+  setTimeout(() => { copied.value = false }, 2000)
 }
 </script>
 
@@ -191,6 +221,26 @@ function getTitle(id: string): string {
   padding: 16px 24px;
   border-top: 1px solid var(--color-border);
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.export-btn {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border: 1px solid var(--color-ink);
+  background: var(--color-ink);
+  color: var(--bg-color);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.export-btn:hover {
+  opacity: 0.75;
 }
 
 .clear-btn {
