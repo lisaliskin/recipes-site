@@ -7,12 +7,12 @@
     <Transition name="cart-slide">
       <aside v-if="uiStore.cartOpen" class="cart-drawer">
         <div class="drawer-header">
-          <h2 class="drawer-title text-label">корзина</h2>
+          <h2 class="drawer-title text-label">список продуктов</h2>
           <button class="close-btn text-label" @click="uiStore.closeCart">✕</button>
         </div>
 
         <div v-if="cartStore.entries.length === 0" class="drawer-empty">
-          <p class="text-small text-muted">добавьте рецепты, чтобы сформировать список покупок</p>
+          <p class="text-small text-muted">добавьте рецепты, чтобы сформировать список продуктов</p>
         </div>
 
         <div v-else class="drawer-body">
@@ -47,7 +47,7 @@
 
         <div v-if="cartStore.entries.length > 0" class="drawer-footer">
           <button class="clear-btn text-label" @click="cartStore.clearCart">
-            очистить корзину
+            очистить список
           </button>
         </div>
       </aside>
@@ -58,14 +58,15 @@
 <script setup lang="ts">
 import { useCartStore } from '../../stores/cartStore'
 import { useUiStore } from '../../stores/uiStore'
-import { getRecipeById } from '../../data/recipes'
+import { useRecipesStore } from '../../stores/recipesStore'
 import CartItem from './CartItem.vue'
 
 const cartStore = useCartStore()
 const uiStore = useUiStore()
+const recipesStore = useRecipesStore()
 
 function getTitle(id: string): string {
-  return getRecipeById(id)?.title ?? id
+  return recipesStore.getById(id).value?.title ?? id
 }
 </script>
 

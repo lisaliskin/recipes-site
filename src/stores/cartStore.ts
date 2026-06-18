@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { CartRecipe, CartIngredient } from '../types'
-import { getRecipeById } from '../data/recipes'
+import { useRecipesStore } from './recipesStore'
 
 export const useCartStore = defineStore('cart', () => {
   const entries = ref<CartRecipe[]>([])
@@ -30,10 +30,11 @@ export const useCartStore = defineStore('cart', () => {
   const totalItems = computed(() => entries.value.length)
 
   const mergedIngredients = computed((): CartIngredient[] => {
+    const recipesStore = useRecipesStore()
     const map = new Map<string, CartIngredient>()
 
     for (const entry of entries.value) {
-      const recipe = getRecipeById(entry.recipeId)
+      const recipe = recipesStore.getById(entry.recipeId).value
       if (!recipe) continue
       const factor = entry.servings / recipe.servings
 

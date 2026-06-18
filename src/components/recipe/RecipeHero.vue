@@ -23,7 +23,7 @@
           :class="{ 'in-cart': inCart }"
           @click="toggleCart"
         >
-          {{ inCart ? '✓ в корзине' : '+ добавить в корзину' }}
+          {{ inCart ? '✓ в списке' : '+ в список продуктов' }}
         </button>
         <HeartButton :recipe-id="recipe.id" />
       </div>

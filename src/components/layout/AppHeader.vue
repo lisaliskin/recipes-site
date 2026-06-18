@@ -7,7 +7,7 @@
       <nav class="header-nav text-label">
         <RouterLink to="/" class="nav-link">главная</RouterLink>
         <button class="nav-link cart-btn" @click="uiStore.toggleCart">
-          корзина
+          список продуктов
           <span v-if="cartStore.totalItems > 0" class="cart-badge">
             {{ cartStore.totalItems }}
           </span>

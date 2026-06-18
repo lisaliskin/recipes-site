@@ -90,7 +90,7 @@ watch(recipe, (r) => {
   }
 })
 
-const { kcalPerServing } = useCalories(activeRecipe.value, scaleFactor, scaledServings)
+const { kcalPerServing } = useCalories(activeRecipe, scaleFactor, scaledServings)
 
 function setModeHandler(m: ScalingMode) {
   setMode(m)
