@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipes Website — Project Overview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --ink: #1a1a1a;
+    --ink-light: #6b6b6b;
+    --border: #e0e0e0;
+    --bg: #ffffff;
+    --bg-soft: #f7f7f5;
+    --accent: #2d2d2d;
+    --green: #1a7a4a;
+    --blue: #1a4a7a;
+    --orange: #c45000;
+    --purple: #5a1a7a;
+    --red: #c0392b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    font-size: 11px;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ---- COVER PAGE ---- */
+  .cover {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 70px;
+    page-break-after: always;
+  }
+
+  .cover-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .cover-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  .cover-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    opacity: 0.4;
+  }
+
+  .cover-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 0;
+  }
+
+  .cover-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 24px;
+  }
+
+  .cover-title {
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: lowercase;
+    margin-bottom: 28px;
+  }
+
+  .cover-subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    color: #aaa;
+    max-width: 480px;
+    line-height: 1.5;
+  }
+
+  .cover-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 40px;
+  }
+
+  .cover-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.6);
+  }
+
+  .cover-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .cover-url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .cover-num {
+    font-size: 100px;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(255,255,255,0.05);
+    letter-spacing: -0.05em;
+  }
+
+  /* ---- CONTENT PAGES ---- */
+  .page {
+    width: 100%;
+    padding: 52px 70px;
+    page-break-after: always;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page:last-child {
+    page-break-after: avoid;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .page-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  .page-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--border);
+  }
+
+  /* ---- SECTION TITLES ---- */
+  .section-title {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    text-transform: lowercase;
+  }
+
+  .section-desc {
+    font-size: 11px;
+    color: var(--ink-light);
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 14px;
+    margin-top: 28px;
+  }
+
+  h3:first-of-type { margin-top: 0; }
+
+  /* ---- GRID ---- */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* ---- CARDS ---- */
+  .card {
+    background: var(--bg-soft);
+    padding: 20px 22px;
+    border-radius: 0;
+    border: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .card-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    color: var(--ink-light);
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .card-body {
+    font-size: 10.5px;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+
+  /* ---- TECH PILL ---- */
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 8px;
+  }
+
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    color: var(--ink-light);
+    background: var(--bg);
+    letter-spacing: 0.05em;
+  }
+
+  .pill.green  { border-color: #1a7a4a33; background: #f0faf5; color: var(--green); }
+  .pill.blue   { border-color: #1a4a7a33; background: #f0f4fa; color: var(--blue); }
+  .pill.orange { border-color: #c4500033; background: #fdf5f0; color: var(--orange); }
+  .pill.purple { border-color: #5a1a7a33; background: #f7f0fa; color: var(--purple); }
+  .pill.dark   { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* ---- STACK TABLE ---- */
+  .stack-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .stack-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stack-table tr:last-child { border-bottom: none; }
+
+  .stack-table td {
+    padding: 9px 0;
+    vertical-align: top;
+    font-size: 10.5px;
+  }
+
+  .stack-table td:first-child {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--ink-light);
+    width: 140px;
+    padding-right: 16px;
+    letter-spacing: 0.05em;
+  }
+
+  .stack-table td:nth-child(2) {
+    font-weight: 500;
+    width: 180px;
+    padding-right: 16px;
+  }
+
+  .stack-table td:last-child {
+    color: var(--ink-light);
+  }
+
+  /* ---- FLOW ---- */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+
+  .flow-step {
+    background: var(--ink);
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 9.5px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .flow-arrow {
+    font-size: 12px;
+    color: var(--ink-light);
+    padding: 0 8px;
+  }
+
+  /* ---- DB SCHEMA ---- */
+  .schema-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 10px;
+  }
+
+  .schema-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 7px 10px;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .schema-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+  }
+
+  .schema-table tr:nth-child(even) td { background: var(--bg-soft); }
+
+  .key { color: var(--orange); font-weight: 500; }
+  .fk  { color: var(--blue); }
+  .type { color: var(--ink-light); }
+
+  /* ---- FEATURE LIST ---- */
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .feature-item:last-child { border-bottom: none; }
+
+  .feature-icon {
+    font-size: 16px;
+    width: 28px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .feature-name {
+    font-weight: 600;
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .feature-desc {
+    font-size: 10px;
+    color: var(--ink-light);
+    line-height: 1.5;
+  }
+
+  /* ---- CODE ---- */
+  .code-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    background: var(--ink);
+    color: #e8e8e8;
+    padding: 16px 18px;
+    line-height: 1.7;
+    overflow: hidden;
+    margin: 12px 0;
+  }
+
+  .code-comment { color: #6a9a6a; }
+  .code-key     { color: #79beff; }
+  .code-str     { color: #ce9f6c; }
+  .code-fn      { color: #dbb6ff; }
+
+  /* ---- IDEA CARDS ---- */
+  .idea-card {
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    position: relative;
+  }
+
+  .idea-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .idea-badge.easy   { background: #f0faf5; color: var(--green); border: 1px solid #1a7a4a33; }
+  .idea-badge.medium { background: #fdf5f0; color: var(--orange); border: 1px solid #c4500033; }
+  .idea-badge.hard   { background: #f7f0fa; color: var(--purple); border: 1px solid #5a1a7a33; }
+
+  .idea-title {
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 6px;
+    padding-right: 60px;
+  }
+
+  .idea-desc {
+    font-size: 10px;
+    color: var(--ink-light);
+    line-height: 1.55;
+  }
+
+  .idea-tech {
+    margin-top: 10px;
+  }
+
+  /* ---- INFRA BLOCK ---- */
+  .infra-box {
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .infra-server {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: var(--ink-light);
+  }
+
+  .infra-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+  }
+
+  .infra-row:last-child { border-bottom: none; }
+
+  .infra-icon { font-size: 14px; width: 22px; flex-shrink: 0; }
+  .infra-name { font-weight: 500; width: 120px; }
+  .infra-detail { color: var(--ink-light); font-size: 9.5px; }
+
+  /* ---- DIVIDER ---- */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  /* ---- SPACER ---- */
+  .spacer { flex: 1; }
+
+  @page {
+    margin: 0;
+    size: A4 portrait;
+  }
+
+  @media print {
+    body { font-size: 11px; }
+    .page { min-height: 0; }
+    .cover { min-height: 297mm; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== COVER ===================== -->
+<div class="cover">
+  <div class="cover-top">
+    <span class="cover-label">проектная документация</span>
+    <span class="cover-date">июнь 2026</span>
+  </div>
+
+  <div class="cover-main">
+    <p class="cover-eyebrow">web application · full stack</p>
+    <h1 class="cover-title">рецепты</h1>
+    <p class="cover-subtitle">
+      Персональный сайт с кулинарными рецептами на Vue 3 + TypeScript.
+      Headless CMS на базе Directus, задеплоен на VPS с PWA поддержкой.
+    </p>
+    <div class="cover-tags">
+      <span class="cover-tag">Vue 3</span>
+      <span class="cover-tag">TypeScript</span>
+      <span class="cover-tag">Directus CMS</span>
+      <span class="cover-tag">Pinia</span>
+      <span class="cover-tag">Vite 5</span>
+      <span class="cover-tag">Docker</span>
+      <span class="cover-tag">nginx</span>
+      <span class="cover-tag">PWA</span>
+      <span class="cover-tag">Hetzner VPS</span>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div>
+      <div class="cover-url">https://157-180-79-150.sslip.io</div>
+      <div class="cover-url" style="margin-top:4px;">vercel → github → autodeoploy</div>
+    </div>
+    <div class="cover-num">01</div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 1: TECH STACK ===================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-label">технический стек</span>
+    <span class="page-num">02</span>
+  </div>
+
+  <h2 class="section-title">стек технологий</h2>
+  <p class="section-desc">Всё приложение написано на TypeScript. Фронтенд — SPA на Vue 3, данные — в Directus headless CMS с SQLite, всё запущено в Docker на сервере Hetzner.</p>
+
+  <h3>фронтенд</h3>
+  <table class="stack-table">
+    <tr>
+      <td>фреймворк</td>
+      <td>Vue 3 (Composition API)</td>
+      <td>Реактивные компоненты, composables, &lt;script setup&gt; синтаксис</td>
+    </tr>
+    <tr>
+      <td>язык</td>
+      <td>TypeScript 5</td>
+      <td>Строгая типизация — типы для Recipe, Ingredient, CartItem и пр.</td>
+    </tr>
+    <tr>
+      <td>сборщик</td>
+      <td>Vite 5</td>
+      <td>Hot Module Replacement в dev, оптимизированный бандл в prod</td>
+    </tr>
+    <tr>
+      <td>стейт</td>
+      <td>Pinia</td>
+      <td>recipesStore, cartStore, favoritesStore, uiStore</td>
+    </tr>
+    <tr>
+      <td>роутер</td>
+      <td>Vue Router 4</td>
+      <td>/ — главная, /recipe/:id — страница рецепта</td>
+    </tr>
+    <tr>
+      <td>стили</td>
+      <td>CSS Variables + Scoped</td>
+      <td>Дизайн-токены, темная / светлая тема, адаптив</td>
+    </tr>
+    <tr>
+      <td>PWA</td>
+      <td>vite-plugin-pwa</td>
+      <td>Service Worker, offline-кэш, manifest, иконки</td>
+    </tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <h3>бэкенд и инфраструктура</h3>
+  <table class="stack-table">
+    <tr>
+      <td>CMS</td>
+      <td>Directus 11</td>
+      <td>Headless CMS с REST API, визуальный интерфейс для управления рецептами</td>
+    </tr>
+    <tr>
+      <td>база данных</td>
+      <td>SQLite</td>
+      <td>Встроена в Directus, файл /opt/directus/database/data.db</td>
+    </tr>
+    <tr>
+      <td>контейнер</td>
+      <td>Docker Compose</td>
+      <td>Directus запущен как Docker-сервис, автоперезапуск</td>
+    </tr>
+    <tr>
+      <td>сервер</td>
+      <td>Hetzner VPS (Ubuntu)</td>
+      <td>IP: 157.180.79.150, 2GB RAM, SSD</td>
+    </tr>
+    <tr>
+      <td>reverse proxy</td>
+      <td>nginx</td>
+      <td>Проксирует к Directus, HTTPS termination, gzip</td>
+    </tr>
+    <tr>
+      <td>SSL</td>
+      <td>Let's Encrypt + sslip.io</td>
+      <td>Бесплатный сертификат на поддомен 157-180-79-150.sslip.io</td>
+    </tr>
+    <tr>
+      <td>деплой фронта</td>
+      <td>Vercel + GitHub</td>
+      <td>Push в main → автодеплой на Vercel CDN</td>
+    </tr>
+  </table>
+
+  <div class="spacer"></div>
+
+  <div class="pill-list">
+    <span class="pill green">Vue 3.x</span>
+    <span class="pill green">TypeScript 5</span>
+    <span class="pill green">Vite 5</span>
+    <span class="pill blue">Pinia 2</span>
+    <span class="pill blue">Vue Router 4</span>
+    <span class="pill orange">Directus 11</span>
+    <span class="pill orange">SQLite</span>
+    <span class="pill purple">Docker</span>
+    <span class="pill purple">nginx</span>
+    <span class="pill purple">Let's Encrypt</span>
+    <span class="pill dark">Vercel</span>
+    <span class="pill dark">GitHub Actions</span>
+  </div>
+</div>
+
+<!-- ===================== PAGE 2: ARCHITECTURE ===================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-label">архитектура</span>
+    <span class="page-num">03</span>
+  </div>
+
+  <h2 class="section-title">как всё работает</h2>
+  <p class="section-desc">Классическая JAMstack-архитектура: статичный фронтенд отдельно от бэкенда. Vue SPA деплоится на Vercel, а Directus CMS живёт на VPS и отдаёт данные по REST API.</p>
+
+  <h3>поток данных</h3>
+  <div class="flow">
+    <div class="flow-step">Пользователь открывает сайт</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Vercel CDN отдаёт SPA</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Vue загружает</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">recipesStore.load()</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">4 запроса к Directus API</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">join на клиенте</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">реактивный рендер</div>
+  </div>
+
+  <h3>pinia stores</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">recipesStore</div>
+      <div class="card-sub">src/stores/recipesStore.ts</div>
+      <div class="card-body">Ленивая загрузка рецептов из Directus. Хранит <code>recipes[]</code>, предоставляет <code>getById(id)</code> и <code>getBySection()</code>. Загружается один раз за сессию.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">cartStore</div>
+      <div class="card-sub">src/stores/cartStore.ts</div>
+      <div class="card-body">Список рецептов в "списке продуктов". Computed <code>mergedIngredients</code> объединяет ингредиенты всех рецептов с учётом порций.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">favoritesStore</div>
+      <div class="card-sub">src/stores/favoritesStore.ts</div>
+      <div class="card-body">Хранит избранные рецепты в <code>localStorage</code>. Персистентен между сессиями без бэкенда.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">uiStore</div>
+      <div class="card-sub">src/stores/uiStore.ts</div>
+      <div class="card-body">Управляет состоянием UI: открыта ли шторка со списком продуктов, текущий раздел (для фона), тема.</div>
+    </div>
+  </div>
+
+  <h3>composables</h3>
+  <table class="stack-table">
+    <tr>
+      <td>useCalories</td>
+      <td>Вычисление калорийности</td>
+      <td>Принимает реактивный ComputedRef&lt;Recipe&gt;, пересчитывает kcal с учётом масштаба порций</td>
+    </tr>
+    <tr>
+      <td>useIngredientScaling</td>
+      <td>Масштабирование рецепта</td>
+      <td>Два режима: по порциям и по конкретному ингредиенту. Возвращает scaleFactor, formatAmount</td>
+    </tr>
+    <tr>
+      <td>useFavorites</td>
+      <td>Избранное</td>
+      <td>Работает с favoritesStore, toggle + проверка состояния</td>
+    </tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <h3>api layer — directus.ts</h3>
+  <div class="code-block">
+<span class="code-comment">// 4 параллельных запроса, join на клиенте (обход ограничений Directus 11)</span>
+<span class="code-key">const</span> [recipesRes, riRes, productsRes, stepsRes] = <span class="code-fn">await</span> Promise.<span class="code-fn">all</span>([
+  <span class="code-fn">fetch</span>(<span class="code-str">`${BASE_URL}/items/recipes?limit=100`</span>),
+  <span class="code-fn">fetch</span>(<span class="code-str">`${BASE_URL}/items/recipe_ingredients?limit=2000`</span>),
+  <span class="code-fn">fetch</span>(<span class="code-str">`${BASE_URL}/items/products?limit=500`</span>),
+  <span class="code-fn">fetch</span>(<span class="code-str">`${BASE_URL}/items/steps?limit=2000`</span>),
+])
+<span class="code-comment">// products присоединяются к recipe_ingredients по product_id</span>
+<span class="code-comment">// kcal считается: sum(amount * kcal_per_100g / 100) / servings</span>
+  </div>
+</div>
+
+<!-- ===================== PAGE 3: DATABASE ===================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-label">база данных</span>
+    <span class="page-num">04</span>
+  </div>
+
+  <h2 class="section-title">структура базы данных</h2>
+  <p class="section-desc">Нормализованная схема: продукты хранятся без дублей в справочнике <code>products</code>, ингредиенты рецепта — в связующей таблице <code>recipe_ingredients</code> с граммовкой. Калории считаются автоматически на клиенте.</p>
+
+  <h3>таблица recipes</h3>
+  <table class="schema-table">
+    <tr><th>поле</th><th>тип</th><th>описание</th></tr>
+    <tr><td><span class="key">id</span></td><td><span class="type">INTEGER PK</span></td><td>Автоинкремент</td></tr>
+    <tr><td>title</td><td><span class="type">VARCHAR</span></td><td>Название рецепта (напр. "Овсяная каша")</td></tr>
+    <tr><td>slug</td><td><span class="type">VARCHAR UNIQUE</span></td><td>URL-идентификатор (напр. "ovsyanaya-kasha")</td></tr>
+    <tr><td>section</td><td><span class="type">VARCHAR</span></td><td>Раздел: завтраки / основное / перекусы / напитки / сладкое</td></tr>
+    <tr><td>description</td><td><span class="type">TEXT</span></td><td>Краткое описание блюда</td></tr>
+    <tr><td>servings</td><td><span class="type">INTEGER</span></td><td>Количество порций по умолчанию</td></tr>
+    <tr><td>cooking_time_minutes</td><td><span class="type">INTEGER</span></td><td>Время приготовления в минутах</td></tr>
+    <tr><td>photo</td><td><span class="type">UUID → directus_files</span></td><td>Фото блюда (загружается в Directus)</td></tr>
+  </table>
+
+  <h3>таблица products (справочник)</h3>
+  <table class="schema-table">
+    <tr><th>поле</th><th>тип</th><th>описание</th></tr>
+    <tr><td><span class="key">id</span></td><td><span class="type">INTEGER PK</span></td><td>Автоинкремент</td></tr>
+    <tr><td>name</td><td><span class="type">VARCHAR UNIQUE</span></td><td>Название продукта без дублей (напр. "молоко")</td></tr>
+    <tr><td>base_unit</td><td><span class="type">VARCHAR</span></td><td>Единица измерения: г / мл / шт</td></tr>
+    <tr><td>kcal_per_100g</td><td><span class="type">REAL</span></td><td>Калорийность на 100г/мл</td></tr>
+    <tr><td>protein / fat / carbs</td><td><span class="type">REAL</span></td><td>Белки, жиры, углеводы на 100г</td></tr>
+  </table>
+
+  <h3>таблица recipe_ingredients (связующая)</h3>
+  <table class="schema-table">
+    <tr><th>поле</th><th>тип</th><th>описание</th></tr>
+    <tr><td><span class="key">id</span></td><td><span class="type">INTEGER PK</span></td><td>Автоинкремент</td></tr>
+    <tr><td><span class="fk">recipe_id</span></td><td><span class="type">FK → recipes ON DELETE CASCADE</span></td><td>Ссылка на рецепт</td></tr>
+    <tr><td><span class="fk">product_id</span></td><td><span class="type">FK → products</span></td><td>Ссылка на продукт из справочника</td></tr>
+    <tr><td>amount</td><td><span class="type">REAL</span></td><td>Количество в base_unit (напр. 200 = 200г)</td></tr>
+    <tr><td>sort</td><td><span class="type">INTEGER</span></td><td>Порядок отображения</td></tr>
+  </table>
+
+  <h3>таблица steps</h3>
+  <table class="schema-table">
+    <tr><th>поле</th><th>тип</th><th>описание</th></tr>
+    <tr><td><span class="key">id</span></td><td><span class="type">INTEGER PK</span></td><td>Автоинкремент</td></tr>
+    <tr><td><span class="fk">recipe_id</span></td><td><span class="type">FK → recipes ON DELETE CASCADE</span></td><td>Ссылка на рецепт</td></tr>
+    <tr><td>text</td><td><span class="type">TEXT</span></td><td>Текст шага приготовления</td></tr>
+    <tr><td>sort</td><td><span class="type">INTEGER</span></td><td>Порядок шага</td></tr>
+  </table>
+
+  <div class="divider" style="margin-top:auto;"></div>
+  <p style="font-size:9.5px; color:var(--ink-light);">
+    <strong>Примечание по CASCADE:</strong> Таблицы steps и recipe_ingredients имеют <code>ON DELETE CASCADE</code> — при удалении рецепта все связанные шаги и ингредиенты удаляются автоматически.
+  </p>
+</div>
+
+<!-- ===================== PAGE 4: FEATURES ===================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-label">функциональность</span>
+    <span class="page-num">05</span>
+  </div>
+
+  <h2 class="section-title">реализованные фичи</h2>
+  <p class="section-desc">21 рецепт в пяти разделах с полным набором функций: поиск, избранное, масштабирование порций, список продуктов, офлайн-режим.</p>
+
+  <div class="feature-list">
+    <div class="feature-item">
+      <div class="feature-icon">🗂</div>
+      <div>
+        <div class="feature-name">Разделы рецептов</div>
+        <div class="feature-desc">Пять категорий: завтраки, основное, перекусы, напитки, сладкое. Цветовое оформление страницы меняется в зависимости от открытого раздела.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">⚖️</div>
+      <div>
+        <div class="feature-name">Масштабирование порций</div>
+        <div class="feature-desc">Два режима: по количеству порций (увеличить/уменьшить × N) и по конкретному ингредиенту (например, "у меня 300г гречки" — всё пересчитается автоматически). Composable <code>useIngredientScaling</code>.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🔥</div>
+      <div>
+        <div class="feature-name">Автоматический подсчёт калорий</div>
+        <div class="feature-desc">Калорийность на порцию считается реактивно из БД: <code>Σ(amount × kcal_per_100g / 100) / servings</code>. Обновляется при изменении масштаба порций. Composable <code>useCalories</code>.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🛒</div>
+      <div>
+        <div class="feature-name">Список продуктов</div>
+        <div class="feature-desc">Добавляй рецепты в список — ингредиенты автоматически объединяются без дублей с суммированием количеств. Шторка выезжает справа. Можно изменить порции перед добавлением.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">❤️</div>
+      <div>
+        <div class="feature-name">Избранное</div>
+        <div class="feature-desc">Сохраняется в localStorage — без авторизации и без бэкенда. Сердечко на карточке рецепта.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🌙</div>
+      <div>
+        <div class="feature-name">Тёмная / светлая тема</div>
+        <div class="feature-desc">Переключатель в хедере. Сохраняется в localStorage. Плавный переход через CSS-переменные.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📱</div>
+      <div>
+        <div class="feature-name">PWA + офлайн-режим</div>
+        <div class="feature-desc">Устанавливается как приложение на телефон или десктоп. Service Worker кэширует статику и рецепты — работает без интернета. Иконки и splash screen.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📐</div>
+      <div>
+        <div class="feature-name">Адаптивная вёрстка</div>
+        <div class="feature-desc">Сетка перестраивается на мобильных. Шапка и карточки оптимизированы под touch-интерфейс.</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">⚙️</div>
+      <div>
+        <div class="feature-name">Headless CMS (Directus)</div>
+        <div class="feature-desc">Добавлять/редактировать рецепты можно через визуальный интерфейс Directus — без кода. Нормализованная БД с справочником продуктов исключает дубликаты.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 5: INFRASTRUCTURE ===================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-label">инфраструктура и деплой</span>
+    <span class="page-num">06</span>
+  </div>
+
+  <h2 class="section-title">инфраструктура</h2>
+  <p class="section-desc">Фронтенд и бэкенд деплоятся независимо. Статичный SPA на Vercel, Directus CMS на VPS через Docker — стандартный разделённый JAMstack подход.</p>
+
+  <div class="grid-2">
+    <div>
+      <h3>фронтенд (vercel)</h3>
+      <div class="infra-box">
+        <div class="infra-server">github.com → vercel.com → CDN Edge</div>
+        <div class="infra-row">
+          <div class="infra-icon">🔄</div>
+          <div class="infra-name">Автодеплой</div>
+          <div class="infra-detail">Push в main → build → deploy за ~30 сек</div>
+        </div>
+        <div class="infra-row">
+          <div class="infra-icon">🌐</div>
+          <div class="infra-name">CDN Edge</div>
+          <div class="infra-detail">Статика раздаётся с ближайшей точки</div>
+        </div>
+        <div class="infra-row">
+          <div class="infra-icon">🔒</div>
+          <div class="infra-name">HTTPS</div>
+          <div class="infra-detail">Автоматический SSL от Vercel</div>
+        </div>
+        <div class="infra-row">
+          <div class="infra-icon">📦</div>
+          <div class="infra-name">Размер бандла</div>
+          <div class="infra-detail">~156 KB JS gzip: ~58 KB</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3>бэкенд (hetzner vps)</h3>
+      <div class="infra-box">
+        <div class="infra-server">157.180.79.150 · Ubuntu · Docker</div>
+        <div class="infra-row">
+          <div class="infra-icon">🐳</div>
+          <div class="infra-name">Docker Compose</div>
+          <div class="infra-detail">Directus 11 в контейнере, автоперезапуск</div>
+        </div>
+        <div class="infra-row">
+          <div class="infra-icon">🔀</div>
+          <div class="infra-name">nginx</div>
+          <div class="infra-detail">Reverse proxy + SSL termination + gzip</div>
+        </div>
+        <div class="infra-row">
+          <div class="infra-icon">🔒</div>
+          <div class="infra-name">SSL / HTTPS</div>
+          <div class="infra-detail">Let's Encrypt + sslip.io (IP → домен)</div>
+        </div>
+        <div class="infra-row">
+          <div class="infra-icon">💾</div>
+          <div class="infra-name">База данных</div>
+          <div class="infra-detail">SQLite файл в /opt/directus/database/</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>directus — как управлять рецептами</h3>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Войти в CMS</div>
+      <div class="card-body">Открыть <strong>157-180-79-150.sslip.io</strong> → войти с кредами → раздел Content</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Добавить рецепт</div>
+      <div class="card-body">Content → Recipes → + Create Item. Заполнить поля, добавить ингредиенты из справочника Products, добавить шаги.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Обновить сайт</div>
+      <div class="card-body">После сохранения в Directus — данные сразу доступны через API. Сайт подтянет их при следующей загрузке страницы.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h3>важные решения при разработке</h3>
+  <table class="stack-table">
+    <tr>
+      <td>sslip.io</td>
+      <td>HTTPS без домена</td>
+      <td>Сервис превращает IP в поддомен для Let's Encrypt — бесплатно без покупки домена</td>
+    </tr>
+    <tr>
+      <td>4 запроса</td>
+      <td>Вместо вложенных полей</td>
+      <td>Directus 11 не поддерживает wildcard в правах. Решение: отдельные запросы + join на клиенте</td>
+    </tr>
+    <tr>
+      <td>ON DELETE CASCADE</td>
+      <td>Удаление рецептов</td>
+      <td>SQLite таблицы пересозданы с каскадным удалением — при удалении рецепта убираются и ингредиенты, и шаги</td>
+    </tr>
+    <tr>
+      <td>ComputedRef&lt;Recipe&gt;</td>
+      <td>Реактивность калорий</td>
+      <td>useCalories принимает реактивный ref вместо plain объекта — пересчитывается когда рецепт загрузится из API</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ===================== PAGE 6: IDEAS ===================== -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-label">идеи для развития</span>
+    <span class="page-num">07</span>
+  </div>
+
+  <h2 class="section-title">что можно добавить</h2>
+  <p class="section-desc">Проект готов к расширению — CMS и архитектура позволяют добавлять фичи без переписывания с нуля.</p>
+
+  <div class="grid-2" style="gap:14px;">
+
+    <div class="idea-card">
+      <span class="idea-badge easy">легко</span>
+      <div class="idea-title">Поиск рецептов</div>
+      <div class="idea-desc">Поле поиска в хедере или на главной — фильтрация по названию и описанию прямо на клиенте (данные уже загружены в store).</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">computed filter</span>
+          <span class="pill">v-model</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge easy">легко</span>
+      <div class="idea-title">Фильтр по тегам / диете</div>
+      <div class="idea-desc">Добавить поле tags в Directus (вегетарианское, без глютена, быстрое) → фильтр-кнопки на главной странице.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">Directus field</span>
+          <span class="pill">Pinia filter</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge easy">легко</span>
+      <div class="idea-title">Страница "Избранное"</div>
+      <div class="idea-desc">Отдельный роут /favorites со всеми рецептами, которые пользователь добавил в сердечко. Данные уже в favoritesStore.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">Vue Router</span>
+          <span class="pill">favoritesStore</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge easy">легко</span>
+      <div class="idea-title">Экспорт списка продуктов</div>
+      <div class="idea-desc">Кнопка "Скопировать список" или "Поделиться" в шторке — генерирует текстовый список ингредиентов для вставки в мессенджер.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">navigator.clipboard</span>
+          <span class="pill">Web Share API</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge medium">средне</span>
+      <div class="idea-title">КБЖУ (белки, жиры, углеводы)</div>
+      <div class="idea-desc">Поля protein/fat/carbs уже есть в таблице products. Нужно добавить их в отображение на странице рецепта — расширить NutritionBadge.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">products.protein</span>
+          <span class="pill">NutritionBadge</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge medium">средне</span>
+      <div class="idea-title">Планировщик меню на неделю</div>
+      <div class="idea-desc">Drag-and-drop сетка 7×3 (завтрак/обед/ужин). Перетаскиваешь рецепты по дням — автоматически собирается список продуктов на всю неделю.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">@dnd-kit или vue-draggable</span>
+          <span class="pill">Pinia mealPlanStore</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge medium">средне</span>
+      <div class="idea-title">Галерея / фотографии шагов</div>
+      <div class="idea-desc">Загрузка нескольких фото на каждый шаг приготовления через Directus. Отображение в виде карусели на странице рецепта.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">Directus files</span>
+          <span class="pill">Swiper.js</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge medium">средне</span>
+      <div class="idea-title">Push-уведомления (таймер)</div>
+      <div class="idea-desc">В каждом шаге приготовления можно указать время → кнопка "Запустить таймер". Уведомление через Service Worker когда таймер истечёт, даже если вкладка закрыта.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">Service Worker</span>
+          <span class="pill">Notifications API</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge hard">сложно</span>
+      <div class="idea-title">Авторизация пользователей</div>
+      <div class="idea-desc">Регистрация через email или Google OAuth. Избранное и список продуктов синхронизируются между устройствами. Directus поддерживает auth из коробки.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">Directus Auth</span>
+          <span class="pill">JWT tokens</span>
+          <span class="pill">OAuth 2.0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge hard">сложно</span>
+      <div class="idea-title">Пользовательские рецепты</div>
+      <div class="idea-desc">Авторизованные пользователи могут добавлять свои рецепты через форму на сайте (без доступа в Directus admin). Модерация через CMS.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">Directus user roles</span>
+          <span class="pill">public submit form</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge hard">сложно</span>
+      <div class="idea-title">ИИ-подбор рецептов</div>
+      <div class="idea-desc">"Что приготовить из того, что есть?" — пользователь вводит продукты, AI предлагает рецепты из базы. Интеграция с Claude API или OpenAI.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">Claude API</span>
+          <span class="pill">vector search</span>
+          <span class="pill">embeddings</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea-card">
+      <span class="idea-badge hard">сложно</span>
+      <div class="idea-title">Свой домен + PostgreSQL</div>
+      <div class="idea-desc">Заменить sslip.io на реальный домен. Перейти с SQLite на PostgreSQL в Docker для надёжности и полноценных бэкапов. Потребует миграции данных.</div>
+      <div class="idea-tech">
+        <div class="pill-list">
+          <span class="pill">Namecheap / reg.ru</span>
+          <span class="pill">PostgreSQL</span>
+          <span class="pill">pg_dump</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="spacer"></div>
+
+  <div style="margin-top: 28px; padding: 16px 20px; border: 1px solid var(--border); background: var(--bg-soft);">
+    <p style="font-size:10px; color:var(--ink-light); line-height:1.7;">
+      <strong style="color:var(--ink);">Приоритет на ближайшее время:</strong>
+      Поиск и фильтр по тегам — наибольшая ценность для UX при минимуме усилий.
+      Экспорт списка продуктов — частый запрос при использовании в реальной жизни.
+      КБЖУ — данные уже в базе, нужен только UI.
+    </p>
+  </div>
+</div>
+
+</body>
+</html>
