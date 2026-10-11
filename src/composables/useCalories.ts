@@ -12,7 +12,7 @@ export function useCalories(
     const servings = scaledServings.value || 1
     let kcal = 0, protein = 0, fat = 0, carbs = 0
     for (const ing of recipe.ingredients) {
-      const a = (ing.amount * scaleFactor.value) / 100
+      const a = (ing.amount * (ing.gramsPerUnit ?? 1) * scaleFactor.value) / 100
       kcal    += a * ing.nutrition.kcal
       protein += a * ing.nutrition.protein
       fat     += a * ing.nutrition.fat

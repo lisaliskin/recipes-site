@@ -64,6 +64,7 @@ import { useCartStore } from '../../stores/cartStore'
 import { useUiStore } from '../../stores/uiStore'
 import { useRecipesStore } from '../../stores/recipesStore'
 import CartItem from './CartItem.vue'
+import { isToTaste } from '../../utils/units'
 
 const cartStore = useCartStore()
 const uiStore = useUiStore()
@@ -80,7 +81,9 @@ function buildText(): string {
     .join(', ')
 
   const ingredients = cartStore.mergedIngredients
-    .map((i) => `• ${i.name} — ${Math.round(i.totalAmount * 10) / 10} ${i.baseUnit}`)
+    .map((i) => isToTaste(i.baseUnit)
+      ? `• ${i.name} — ${i.baseUnit}`
+      : `• ${i.name} — ${Math.round(i.totalAmount * 10) / 10} ${i.baseUnit}`)
     .join('\n')
 
   return `список продуктов\n\nрецепты: ${recipes}\n\n${ingredients}`

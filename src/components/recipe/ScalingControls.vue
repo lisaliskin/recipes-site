@@ -31,11 +31,11 @@
         <span class="text-label">ингредиент:</span>
         <select v-model="anchorIngredientId" class="ing-select text-small">
           <option
-            v-for="ing in recipe.ingredients"
+            v-for="ing in anchorOptions"
             :key="ing.id"
             :value="ing.id"
           >
-            {{ ing.name }}
+            {{ ing.name }}{{ ing.group ? ` (${ing.group})` : '' }}
           </option>
         </select>
       </div>
@@ -103,6 +103,9 @@ const anchorQuantity = computed({
   get: () => props.anchorQuantity,
   set: (v) => emit('update:anchorQuantity', v),
 })
+
+// «по вкусу» и прочее без количества пропорцией не задать
+const anchorOptions = computed(() => props.recipe.ingredients.filter((i) => i.amount > 0))
 
 const selectedUnit = computed(() => {
   const ing = props.recipe.ingredients.find((i) => i.id === props.anchorIngredientId)

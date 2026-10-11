@@ -39,11 +39,13 @@ export const useCartStore = defineStore('cart', () => {
       const factor = entry.servings / recipe.servings
 
       for (const ing of recipe.ingredients) {
-        if (map.has(ing.id)) {
-          map.get(ing.id)!.totalAmount += ing.amount * factor
+        // один продукт в одних единицах складываем, в разных — отдельными строками
+        const key = `${ing.productId ?? ing.id}|${ing.baseUnit}`
+        if (map.has(key)) {
+          map.get(key)!.totalAmount += ing.amount * factor
         } else {
-          map.set(ing.id, {
-            id: ing.id,
+          map.set(key, {
+            id: key,
             name: ing.name,
             totalAmount: ing.amount * factor,
             baseUnit: ing.baseUnit,

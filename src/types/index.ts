@@ -13,6 +13,12 @@ export interface Ingredient {
   amount: number
   baseUnit: string
   nutrition: NutritionPer100g
+  // id продукта из каталога (id строки уникален, продукт может повторяться в разных группах)
+  productId?: string
+  // граммов в одной единице baseUnit (для КБЖУ); нет — считаем как граммы
+  gramsPerUnit?: number
+  // подзаголовок группы: «для бисквита», «для сиропа»
+  group?: string
 }
 
 export interface InstructionStep {

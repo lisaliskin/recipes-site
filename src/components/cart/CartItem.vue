@@ -6,7 +6,8 @@
     <div class="item-info">
       <span class="item-name text-body" :class="{ 'item-done': isChecked }">{{ item.name }}</span>
       <span class="item-amount text-small text-muted">
-        {{ formatAmount(item.totalAmount) }} {{ item.baseUnit }}
+        <template v-if="isToTaste(item.baseUnit)">{{ item.baseUnit }}</template>
+        <template v-else>{{ formatAmount(item.totalAmount) }} {{ item.baseUnit }}</template>
       </span>
     </div>
   </li>
@@ -15,6 +16,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { CartIngredient } from '../../types'
+import { isToTaste } from '../../utils/units'
 
 defineProps<{ item: CartIngredient }>()
 

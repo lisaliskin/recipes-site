@@ -32,9 +32,10 @@ export function useIngredientScaling(recipe: Recipe) {
 
   function setMode(m: ScalingMode) {
     mode.value = m
-    if (m === 'ingredient' && !anchorIngredientId.value && recipe.ingredients.length > 0) {
-      anchorIngredientId.value = recipe.ingredients[0].id
-      anchorQuantity.value = recipe.ingredients[0].amount
+    const first = recipe.ingredients.find((i) => i.amount > 0)
+    if (m === 'ingredient' && !anchorIngredientId.value && first) {
+      anchorIngredientId.value = first.id
+      anchorQuantity.value = first.amount
     }
   }
 

@@ -1,4 +1,5 @@
 import type { Recipe, SectionKey } from '../types'
+import { gramsPerUnit, normalizeUnit } from '../utils/units'
 
 const BASE_URL = 'https://157-180-79-150.sslip.io'
 
@@ -21,6 +22,8 @@ interface DirectusProduct {
   proteins: number
   fats: number
   carbs: number
+  grams_per_piece?: number | null
+  density?: number | null
 }
 
 interface DirectusRecipeIngredient {
@@ -29,6 +32,7 @@ interface DirectusRecipeIngredient {
   product_id: number
   amount: number
   base_unit: string
+  group_name?: string | null
   sort: number
   product?: DirectusProduct
 }
@@ -40,13 +44,20 @@ interface DirectusStep {
   sort: number
 }
 
+function riGramsPerUnit(ri: DirectusRecipeIngredient): number {
+  return gramsPerUnit(ri.base_unit, {
+    gramsPerPiece: ri.product?.grams_per_piece,
+    density: ri.product?.density,
+  })
+}
+
 function calcKcalPerServing(
   recipeIngredients: DirectusRecipeIngredient[],
   servings: number,
 ): number {
   const total = recipeIngredients.reduce((sum, ri) => {
     const kcal = ri.product?.kcal_per_100g ?? 0
-    return sum + (ri.amount * kcal) / 100
+    return sum + (ri.amount * riGramsPerUnit(ri) * kcal) / 100
   }, 0)
   return servings > 0 ? Math.round(total / servings) : 0
 }
@@ -70,10 +81,13 @@ function toRecipe(
     totalKcalPerServing: calcKcalPerServing(sortedIng, d.servings),
     favoriteSeed: d.favorite_seed,
     ingredients: sortedIng.map((ri) => ({
-      id: String(ri.product_id),
+      id: String(ri.id),
+      productId: String(ri.product_id),
       name: ri.product?.name ?? '',
       amount: ri.amount,
-      baseUnit: ri.base_unit,
+      baseUnit: normalizeUnit(ri.base_unit),
+      gramsPerUnit: riGramsPerUnit(ri),
+      group: ri.group_name?.trim() || undefined,
       nutrition: {
         kcal: ri.product?.kcal_per_100g ?? 0,
         protein: ri.product?.proteins ?? 0,
