@@ -1,45 +1,35 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { recipes } from '../data/recipes'
 import { useRecipesStore } from './recipesStore'
 
 export const useFavoritesStore = defineStore('favorites', () => {
-  const seedCounts: Record<string, number> = {}
-  recipes.forEach((r) => {
-    seedCounts[r.id] = r.favoriteSeed
-  })
+  const recipesStore = useRecipesStore()
 
   const savedFavorites = localStorage.getItem('userFavorites')
-  const savedCounts = localStorage.getItem('globalCounts')
-
   const userFavorites = ref<Record<string, boolean>>(
     savedFavorites ? JSON.parse(savedFavorites) : {},
   )
-  const globalCounts = ref<Record<string, number>>(
-    savedCounts ? JSON.parse(savedCounts) : { ...seedCounts },
-  )
+
+  // Old builds cached whole counts here; they would hide seed changes made in Directus.
+  localStorage.removeItem('globalCounts')
 
   function isFavorited(recipeId: string): boolean {
     return !!userFavorites.value[recipeId]
   }
 
   function getCount(recipeId: string): number {
-    return globalCounts.value[recipeId] ?? seedCounts[recipeId] ?? 0
+    const seed = recipesStore.recipes.find((r) => r.id === recipeId)?.favoriteSeed ?? 0
+    return seed + (userFavorites.value[recipeId] ? 1 : 0)
   }
 
   function toggleFavorite(recipeId: string) {
-    const nowFavoriting = !userFavorites.value[recipeId]
-    userFavorites.value[recipeId] = nowFavoriting
-    const current = globalCounts.value[recipeId] ?? seedCounts[recipeId] ?? 0
-    globalCounts.value[recipeId] = current + (nowFavoriting ? 1 : -1)
+    userFavorites.value[recipeId] = !userFavorites.value[recipeId]
     localStorage.setItem('userFavorites', JSON.stringify(userFavorites.value))
-    localStorage.setItem('globalCounts', JSON.stringify(globalCounts.value))
   }
 
-  const favoritedRecipes = computed(() => {
-    const recipesStore = useRecipesStore()
-    return recipesStore.recipes.filter((r) => userFavorites.value[r.id])
-  })
+  const favoritedRecipes = computed(() =>
+    recipesStore.recipes.filter((r) => userFavorites.value[r.id]),
+  )
 
-  return { userFavorites, globalCounts, isFavorited, getCount, toggleFavorite, favoritedRecipes }
+  return { userFavorites, isFavorited, getCount, toggleFavorite, favoritedRecipes }
 })
