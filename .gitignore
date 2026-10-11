@@ -28,3 +28,4 @@ dist-ssr
 
 # Directus backups made by scripts/ingredients-v2.py
 directus-backup-*.json
+.directus-token
