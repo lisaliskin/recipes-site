@@ -39,6 +39,33 @@ export default defineConfig({
         navigateFallback: 'index.html',
         runtimeCaching: [
           {
+            // Рецепты и настройки из Directus — сначала сеть, при офлайне — последняя сохранённая копия
+            urlPattern: /^https:\/\/157-180-79-150\.sslip\.io\/items\//,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'directus-data',
+              networkTimeoutSeconds: 5,
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 дней
+              },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            // Фото из Directus — сначала кеш, потом сеть
+            urlPattern: /^https:\/\/157-180-79-150\.sslip\.io\/assets\//,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'directus-photos',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 90, // 90 дней
+              },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
             // Фото рецептов — сначала кеш, потом сеть
             urlPattern: /\/photos\/.+\.jpg$/,
             handler: 'CacheFirst',
