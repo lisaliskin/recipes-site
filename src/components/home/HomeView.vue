@@ -20,6 +20,8 @@
       </div>
     </div>
 
+    <DinnerPicker v-if="!query.trim() && !recipesStore.error" />
+
     <div v-if="recipesStore.error" class="load-error text-body">
       не удалось загрузить рецепты: {{ recipesStore.error }}
     </div>
@@ -53,10 +55,9 @@ import { SECTIONS } from '../../data/recipes'
 import RecipeSection from './RecipeSection.vue'
 import RecipeCard from './RecipeCard.vue'
 import AuthorBio from './AuthorBio.vue'
-import { useUiStore } from '../../stores/uiStore'
+import DinnerPicker from './DinnerPicker.vue'
 import { useRecipesStore } from '../../stores/recipesStore'
 
-const uiStore = useUiStore()
 const recipesStore = useRecipesStore()
 const query = ref('')
 
@@ -71,7 +72,6 @@ const searchResults = computed(() => {
 })
 
 onMounted(() => {
-  uiStore.setActiveSection(null)
   recipesStore.load()
 })
 

@@ -14,7 +14,7 @@
     <div class="hero-info">
       <RouterLink to="/" class="back-link text-label">← назад</RouterLink>
       <span class="section-tag text-label">{{ recipe.section }}</span>
-      <h1 class="hero-title text-display">{{ recipe.title }}</h1>
+      <h1 class="hero-title text-display" :style="{ color: recipe.titleColor }">{{ recipe.title }}</h1>
       <p class="hero-desc text-body text-muted">{{ recipe.description }}</p>
       <NutritionBadge :time="recipe.cookingTimeMinutes" :kcal="kcal" :macros="macros" />
       <div class="hero-actions">
