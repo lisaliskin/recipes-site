@@ -22,8 +22,20 @@ import CartDrawer from './components/cart/CartDrawer.vue'
 
 onMounted(async () => {
   const settings = await fetchSiteSettings()
-  if (settings.titleColor) {
-    document.documentElement.style.setProperty('--title-color', settings.titleColor)
+  const root = document.documentElement.style
+  // пустое значение в Directus — возвращаемся к цветам из main.css
+  if (settings.titleColor) root.setProperty('--title-color', settings.titleColor)
+  else root.removeProperty('--title-color')
+  if (settings.bgColor) {
+    root.setProperty('--bg-color', settings.bgColor)
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', settings.bgColor)
+  } else {
+    root.removeProperty('--bg-color')
+  }
+  try {
+    localStorage.setItem('siteColors', JSON.stringify(settings))
+  } catch {
+    // приватный режим — просто без кэша
   }
 })
 </script>

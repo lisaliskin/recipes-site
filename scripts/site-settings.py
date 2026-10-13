@@ -2,8 +2,8 @@
 """
 Настройки сайта и заявки на план питания в Directus:
 
-1. site_settings — синглтон (одна запись) с полем title_color:
-   цвет больших заголовков сайта, выбирается пипеткой в Directus.
+1. site_settings — синглтон (одна запись) с полями title_color
+   (цвет больших заголовков) и bg_color (цвет фона сайта), выбираются пипеткой в Directus.
    Публичный доступ: только чтение.
    recipes.title_color — свой цвет названия у отдельного рецепта
    (пусто — берётся общий цвет из site_settings).
@@ -27,6 +27,7 @@ import requests
 APPLY = "--apply" in sys.argv
 BASE_URL = os.environ.get("DIRECTUS_URL", "https://157-180-79-150.sslip.io").rstrip("/")
 DEFAULT_TITLE_COLOR = "#1a1a1a"  # = --color-ink, как сейчас на сайте
+DEFAULT_BG_COLOR = "#ebf4ff"  # = --bg-color в main.css
 
 
 # ── доступ ───────────────────────────────────────────────────────────────────
@@ -113,6 +114,18 @@ else:
     })
     log(f"записать цвет по умолчанию {DEFAULT_TITLE_COLOR}")
     call("PATCH", "/items/site_settings", json={"title_color": DEFAULT_TITLE_COLOR})
+
+if "bg_color" in {f["field"] for f in call("GET", "/fields/site_settings", ok404=True) or []}:
+    print("  поле bg_color уже есть")
+else:
+    log(f"добавить в site_settings поле bg_color (цвет фона), значение {DEFAULT_BG_COLOR}")
+    call("POST", "/fields/site_settings", json={
+        "field": "bg_color", "type": "string",
+        "meta": {"interface": "select-color", "display": "color", "width": "half",
+                 "note": "Цвет фона всего сайта"},
+        "schema": {"default_value": DEFAULT_BG_COLOR},
+    })
+    call("PATCH", "/items/site_settings", json={"bg_color": DEFAULT_BG_COLOR})
 ensure_permission(policy, "site_settings", "read", ["*"])
 
 if "title_color" in {f["field"] for f in call("GET", "/fields/recipes")}:

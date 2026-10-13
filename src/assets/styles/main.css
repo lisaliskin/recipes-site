@@ -4,6 +4,7 @@
   --color-ink: #1a1a1a;
   --color-ink-light: #555;
   --color-border: rgba(26, 26, 26, 0.15);
+  /* цвет фона; сайт подставляет значение из Directus (site_settings.bg_color) */
   --bg-color: #ebf4ff;
   /* цвет больших заголовков; сайт подставляет значение из Directus (site_settings.title_color) */
   --title-color: var(--color-ink);

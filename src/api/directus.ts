@@ -160,17 +160,18 @@ export async function fetchRecipeById(id: string): Promise<Recipe | null> {
 
 export interface SiteSettings {
   titleColor: string | null
+  bgColor: string | null
 }
 
 // Синглтон site_settings в Directus. Если коллекции ещё нет или нет доступа — работаем с цветами по умолчанию.
 export async function fetchSiteSettings(): Promise<SiteSettings> {
   try {
     const res = await fetch(`${BASE_URL}/items/site_settings`)
-    if (!res.ok) return { titleColor: null }
+    if (!res.ok) return { titleColor: null, bgColor: null }
     const data = (await res.json()).data ?? {}
-    return { titleColor: data.title_color || null }
+    return { titleColor: data.title_color || null, bgColor: data.bg_color || null }
   } catch {
-    return { titleColor: null }
+    return { titleColor: null, bgColor: null }
   }
 }
 

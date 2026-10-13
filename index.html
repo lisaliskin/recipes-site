@@ -10,6 +10,14 @@
     <meta name="apple-mobile-web-app-title" content="рецепты" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>рецепты</title>
+    <script>
+      // цвета из Directus с прошлого визита — чтобы фон не мигал, пока грузятся настройки
+      try {
+        var c = JSON.parse(localStorage.getItem('siteColors') || '{}')
+        if (c.bgColor) document.documentElement.style.setProperty('--bg-color', c.bgColor)
+        if (c.titleColor) document.documentElement.style.setProperty('--title-color', c.titleColor)
+      } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
