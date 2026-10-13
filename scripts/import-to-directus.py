@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
+import os
+import sys
+
 import requests
 import json
 
-BASE_URL = "http://157.180.79.150:8055"
-EMAIL = "lisaliskin@gmail.com"
-PASSWORD = "recipes2024!"
+BASE_URL = os.environ.get("DIRECTUS_URL", "https://157-180-79-150.sslip.io").rstrip("/")
 
-# Авторизация
-r = requests.post(f"{BASE_URL}/auth/login", json={"email": EMAIL, "password": PASSWORD})
-token = r.json()["data"]["access_token"]
+# Доступ: DIRECTUS_TOKEN или DIRECTUS_EMAIL + DIRECTUS_PASSWORD из окружения
+token = os.environ.get("DIRECTUS_TOKEN")
+if not token:
+    email, pwd = os.environ.get("DIRECTUS_EMAIL"), os.environ.get("DIRECTUS_PASSWORD")
+    if not (email and pwd):
+        sys.exit("Нужен DIRECTUS_TOKEN или DIRECTUS_EMAIL + DIRECTUS_PASSWORD")
+    r = requests.post(f"{BASE_URL}/auth/login", json={"email": email, "password": pwd})
+    r.raise_for_status()
+    token = r.json()["data"]["access_token"]
 headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
 recipes = [
