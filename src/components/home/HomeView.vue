@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { SECTIONS } from '../../data/recipes'
+import { SECTIONS } from '../../data/sections'
 import RecipeSection from './RecipeSection.vue'
 import RecipeCard from './RecipeCard.vue'
 import AuthorBio from './AuthorBio.vue'
