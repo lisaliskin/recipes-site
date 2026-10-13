@@ -51,7 +51,6 @@ const isFavoritesRoute = computed(() => route.name === 'favorites')
   justify-content: space-between;
   padding: 18px calc(var(--spacing) * 4);
   border-bottom: 1px solid var(--color-border);
-  transition: background-color 0.8s ease;
 }
 
 .header-logo {
@@ -115,7 +114,6 @@ const isFavoritesRoute = computed(() => route.name === 'favorites')
   border-radius: 50%;
   font-size: 0.5rem;
   margin-left: 4px;
-  transition: background 0.8s ease, color 0.8s ease;
 }
 
 @media (max-width: 480px) {

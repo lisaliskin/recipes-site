@@ -155,3 +155,35 @@ export async function fetchRecipeById(id: string): Promise<Recipe | null> {
 
   return toRecipe(recipe, ri, steps)
 }
+
+export interface SiteSettings {
+  titleColor: string | null
+}
+
+// Синглтон site_settings в Directus. Если коллекции ещё нет или нет доступа — работаем с цветами по умолчанию.
+export async function fetchSiteSettings(): Promise<SiteSettings> {
+  try {
+    const res = await fetch(`${BASE_URL}/items/site_settings`)
+    if (!res.ok) return { titleColor: null }
+    const data = (await res.json()).data ?? {}
+    return { titleColor: data.title_color || null }
+  } catch {
+    return { titleColor: null }
+  }
+}
+
+export interface MealPlanRequest {
+  name: string
+  contact: string
+  wishes: string
+}
+
+// Заявка «заказать план питания» сохраняется в коллекцию meal_plan_requests (публичное право только на создание).
+export async function submitMealPlanRequest(req: MealPlanRequest): Promise<void> {
+  const res = await fetch(`${BASE_URL}/items/meal_plan_requests`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req),
+  })
+  if (!res.ok) throw new Error(`Directus error: ${res.status}`)
+}

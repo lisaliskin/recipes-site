@@ -25,15 +25,12 @@
 import { onMounted } from 'vue'
 import { useFavoritesStore } from '../../stores/favoritesStore'
 import { useRecipesStore } from '../../stores/recipesStore'
-import { useUiStore } from '../../stores/uiStore'
 import RecipeCard from '../home/RecipeCard.vue'
 
 const favStore = useFavoritesStore()
 const recipesStore = useRecipesStore()
-const uiStore = useUiStore()
 
 onMounted(async () => {
-  uiStore.setActiveSection(null)
   await recipesStore.load()
 })
 

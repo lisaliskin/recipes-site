@@ -8,26 +8,24 @@
       </Transition>
     </RouterView>
 
+    <AppFooter />
     <CartDrawer />
   </div>
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
-import { useUiStore, SECTION_COLORS } from './stores/uiStore'
+import { onMounted } from 'vue'
+import { fetchSiteSettings } from './api/directus'
 import AppHeader from './components/layout/AppHeader.vue'
+import AppFooter from './components/layout/AppFooter.vue'
 import CartDrawer from './components/cart/CartDrawer.vue'
 
-const uiStore = useUiStore()
-
-watch(
-  () => uiStore.activeSection,
-  (section) => {
-    const color = section ? SECTION_COLORS[section] : '#f5ecd7'
-    document.body.style.setProperty('--bg-color', color)
-  },
-  { immediate: true },
-)
+onMounted(async () => {
+  const settings = await fetchSiteSettings()
+  if (settings.titleColor) {
+    document.documentElement.style.setProperty('--title-color', settings.titleColor)
+  }
+})
 </script>
 
 <style>

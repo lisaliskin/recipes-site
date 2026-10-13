@@ -41,7 +41,6 @@
 import { computed, onMounted, watch } from 'vue'
 import { useIngredientScaling } from '../../composables/useIngredientScaling'
 import { useCalories } from '../../composables/useCalories'
-import { useUiStore } from '../../stores/uiStore'
 import { useRecipesStore } from '../../stores/recipesStore'
 import type { ScalingMode } from '../../composables/useIngredientScaling'
 import RecipeHero from './RecipeHero.vue'
@@ -50,7 +49,6 @@ import IngredientList from './IngredientList.vue'
 import InstructionSteps from './InstructionSteps.vue'
 
 const props = defineProps<{ id: string }>()
-const uiStore = useUiStore()
 const recipesStore = useRecipesStore()
 
 const recipe = computed(() => recipesStore.getById(props.id).value)
@@ -86,7 +84,6 @@ watch(recipe, (r) => {
   if (r) {
     desiredServings.value = r.servings
     mode.value = 'servings'
-    uiStore.setActiveSection(r.section)
   }
 })
 
@@ -98,9 +95,6 @@ function setModeHandler(m: ScalingMode) {
 
 onMounted(async () => {
   await recipesStore.load()
-  if (recipe.value) {
-    uiStore.setActiveSection(recipe.value.section)
-  }
 })
 </script>
 

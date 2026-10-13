@@ -4,12 +4,9 @@
   --color-ink: #1a1a1a;
   --color-ink-light: #555;
   --color-border: rgba(26, 26, 26, 0.15);
-  --bg-color: #f5ecd7;
-
-  --section-завтраки: #f5ecd7;
-  --section-закуски: #d4e6c3;
-  --section-основное: #e8c4b0;
-  --section-десерты: #f0d4d4;
+  --bg-color: #ebf4ff;
+  /* цвет больших заголовков; сайт подставляет значение из Directus (site_settings.title_color) */
+  --title-color: var(--color-ink);
 
   --spacing: 8px;
   --max-width: 1400px;
@@ -33,7 +30,6 @@ body {
   font-family: var(--font-mono);
   color: var(--color-ink);
   background-color: var(--bg-color);
-  transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
   line-height: 1.5;
 }
