@@ -38,6 +38,8 @@ export interface Recipe {
   steps: InstructionStep[]
   totalKcalPerServing: number
   favoriteSeed: number
+  // цвет названия блюда из Directus; нет — общий цвет заголовков
+  titleColor?: string
 }
 
 export interface CartRecipe {

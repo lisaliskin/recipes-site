@@ -13,6 +13,7 @@ interface DirectusRecipe {
   description: string
   favorite_seed: number
   photo: string | null
+  title_color?: string | null
 }
 
 interface DirectusProduct {
@@ -80,6 +81,7 @@ function toRecipe(
     description: d.description,
     totalKcalPerServing: calcKcalPerServing(sortedIng, d.servings),
     favoriteSeed: d.favorite_seed,
+    titleColor: d.title_color || undefined,
     ingredients: sortedIng.map((ri) => ({
       id: String(ri.id),
       productId: String(ri.product_id),

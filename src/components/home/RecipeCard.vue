@@ -15,7 +15,7 @@
     </div>
 
     <div class="card-body">
-      <h3 class="card-title text-display-sm">{{ recipe.title }}</h3>
+      <h3 class="card-title text-display-sm" :style="{ color: recipe.titleColor }">{{ recipe.title }}</h3>
       <p class="card-desc text-small text-muted">{{ recipe.description }}</p>
 
       <div class="card-meta">

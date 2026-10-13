@@ -5,6 +5,8 @@
 1. site_settings — синглтон (одна запись) с полем title_color:
    цвет больших заголовков сайта, выбирается пипеткой в Directus.
    Публичный доступ: только чтение.
+   recipes.title_color — свой цвет названия у отдельного рецепта
+   (пусто — берётся общий цвет из site_settings).
 2. meal_plan_requests — заявки из футера «заказать план питания»:
    name, contact, wishes, status (новая / в работе / готово), date_created.
    Публичный доступ: только создание (читать заявки может только админ).
@@ -112,6 +114,27 @@ else:
     log(f"записать цвет по умолчанию {DEFAULT_TITLE_COLOR}")
     call("PATCH", "/items/site_settings", json={"title_color": DEFAULT_TITLE_COLOR})
 ensure_permission(policy, "site_settings", "read", ["*"])
+
+if "title_color" in {f["field"] for f in call("GET", "/fields/recipes")}:
+    print("  поле recipes.title_color уже есть")
+else:
+    log("добавить в recipes поле title_color (цвет названия блюда)")
+    call("POST", "/fields/recipes", json={
+        "field": "title_color", "type": "string",
+        "meta": {"interface": "select-color", "display": "color", "width": "half",
+                 "note": "Цвет названия блюда. Пусто — общий цвет из «Настроек сайта»"},
+        "schema": {"is_nullable": True},
+    })
+# сайт читает recipes без логина — новое поле должно быть в публичном праве на чтение
+for perm in call("GET", "/permissions", params={
+        "filter[policy][_eq]": policy, "filter[collection][_eq]": "recipes",
+        "filter[action][_eq]": "read"}) or []:
+    fields = perm.get("fields") or []
+    if "*" in fields or "title_color" in fields:
+        print("  публичное чтение recipes уже включает title_color")
+    else:
+        log("добавить title_color в публичное чтение recipes")
+        call("PATCH", f"/permissions/{perm['id']}", json={"fields": fields + ["title_color"]})
 
 # ── 2. meal_plan_requests ────────────────────────────────────────────────────
 print("\n── Заявки на план питания (meal_plan_requests)")
