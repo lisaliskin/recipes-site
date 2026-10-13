@@ -2,14 +2,16 @@
   <article class="recipe-card" @click="navigate">
     <div class="card-photo">
       <img
-        v-if="recipe.photoUrl"
-        :src="recipe.photoUrl"
+        v-if="recipe.photoUrl && !imgMissing"
+        :src="photoSrc(recipe.photoUrl)"
+        :srcset="photoSrcset(recipe.photoUrl)"
+        sizes="(max-width: 640px) 100vw, 450px"
         :alt="recipe.title"
         class="card-img"
         loading="lazy"
         @error="onImgError"
       />
-      <div v-if="imgMissing || !recipe.photoUrl" class="photo-placeholder card-img">
+      <div v-else class="photo-placeholder card-img">
         фото
       </div>
     </div>
@@ -43,6 +45,7 @@ import { useCartStore } from '../../stores/cartStore'
 import { useUiStore } from '../../stores/uiStore'
 import NutritionBadge from '../common/NutritionBadge.vue'
 import HeartButton from '../common/HeartButton.vue'
+import { photoSrc, photoSrcset } from '../../utils/photo'
 
 const props = defineProps<{ recipe: Recipe }>()
 
@@ -81,9 +84,16 @@ function onImgError() {
   overflow: hidden;
 }
 
-.recipe-card:hover {
-  border-color: var(--color-ink);
-  transform: translateY(-2px);
+/* на телефоне :hover «залипает» после тапа, поэтому эффекты только для мыши */
+@media (hover: hover) {
+  .recipe-card:hover {
+    border-color: var(--color-ink);
+    transform: translateY(-2px);
+  }
+
+  .recipe-card:hover .card-img {
+    transform: scale(1.04);
+  }
 }
 
 .card-photo {
@@ -98,10 +108,6 @@ function onImgError() {
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s ease;
-}
-
-.recipe-card:hover .card-img {
-  transform: scale(1.04);
 }
 
 .card-body {

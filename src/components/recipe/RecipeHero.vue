@@ -3,7 +3,9 @@
     <div class="hero-photo">
       <img
         v-if="recipe.photoUrl && !imgMissing"
-        :src="recipe.photoUrl"
+        :src="photoSrc(recipe.photoUrl, 1200)"
+        :srcset="photoSrcset(recipe.photoUrl)"
+        sizes="(max-width: 768px) 100vw, 50vw"
         :alt="recipe.title"
         class="hero-img"
         @error="imgMissing = true"
@@ -38,6 +40,7 @@ import { useCartStore } from '../../stores/cartStore'
 import { useUiStore } from '../../stores/uiStore'
 import NutritionBadge from '../common/NutritionBadge.vue'
 import HeartButton from '../common/HeartButton.vue'
+import { photoSrc, photoSrcset } from '../../utils/photo'
 
 const props = defineProps<{
   recipe: Recipe
@@ -73,12 +76,15 @@ function toggleCart() {
 .hero-photo {
   position: relative;
   overflow: hidden;
+  aspect-ratio: 4 / 5;
   max-height: 600px;
+  background: rgba(26, 26, 26, 0.06);
 }
 
+/* фото заполняет рамку целиком и обрезается по центру, а не снизу */
 .hero-img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   object-fit: cover;
   object-position: center;
@@ -143,10 +149,13 @@ function toggleCart() {
 @media (max-width: 768px) {
   .recipe-hero {
     grid-template-columns: 1fr;
+    gap: calc(var(--spacing) * 3);
+    padding-top: calc(var(--spacing) * 2);
   }
 
   .hero-photo {
     aspect-ratio: 4 / 3;
+    max-height: none;
   }
 }
 </style>
