@@ -163,15 +163,16 @@ export interface SiteSettings {
   bgColor: string | null
 }
 
-// Синглтон site_settings в Directus. Если коллекции ещё нет или нет доступа — работаем с цветами по умолчанию.
-export async function fetchSiteSettings(): Promise<SiteSettings> {
+// Синглтон site_settings в Directus.
+// null — настройки не загрузились (сайт остаётся с прошлыми цветами)
+export async function fetchSiteSettings(): Promise<SiteSettings | null> {
   try {
     const res = await fetch(`${BASE_URL}/items/site_settings`)
-    if (!res.ok) return { titleColor: null, bgColor: null }
+    if (!res.ok) return null
     const data = (await res.json()).data ?? {}
     return { titleColor: data.title_color || null, bgColor: data.bg_color || null }
   } catch {
-    return { titleColor: null, bgColor: null }
+    return null
   }
 }
 
