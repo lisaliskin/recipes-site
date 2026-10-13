@@ -7,10 +7,10 @@ export default defineConfig({
     vue(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['photos/*.jpg', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.ico', 'favicon-96.png', 'apple-touch-icon.png'],
       manifest: {
-        name: 'рецепты',
-        short_name: 'рецепты',
+        name: "Liskin's Kitchen",
+        short_name: "Liskin's Kitchen",
         description: 'домашние рецепты с перерасчётом ингредиентов и списком покупок',
         theme_color: '#ebf4ff',
         background_color: '#ebf4ff',
@@ -28,7 +28,12 @@ export default defineConfig({
             src: 'pwa-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable',
+          },
+          {
+            src: 'pwa-maskable-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
           },
         ],
       },
@@ -63,18 +68,6 @@ export default defineConfig({
                 maxAgeSeconds: 60 * 60 * 24 * 90, // 90 дней
               },
               cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          {
-            // Фото рецептов — сначала кеш, потом сеть
-            urlPattern: /\/photos\/.+\.jpg$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'recipe-photos',
-              expiration: {
-                maxEntries: 60,
-                maxAgeSeconds: 60 * 60 * 24 * 90, // 90 дней
-              },
             },
           },
           {
